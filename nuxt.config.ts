@@ -24,15 +24,7 @@ export default defineNuxtConfig({
   },
 
   nitro: {
-    preset: process.env.NITRO_PRESET || 'cloudflare-pages',
-    cloudflare: {
-      pages: {
-        routes: {
-          include: ['/*'],
-          exclude: ['/build/*']
-        }
-      }
-    }
+    preset: process.env.NITRO_PRESET || 'cloudflare-module'
   },
 
   runtimeConfig: {
