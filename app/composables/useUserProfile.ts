@@ -103,14 +103,16 @@ export const useUserProfile = () => {
     return 0
   }
 
-  const fetchProfile = async () => {
-    let userId = user.value?.id
+  const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i
+
+  const fetchProfile = async (explicitUserId?: string) => {
+    let userId = explicitUserId || user.value?.id
     if (!userId) {
       const { data: authData } = await supabase.auth.getUser()
       userId = authData?.user?.id
     }
 
-    if (!userId || typeof userId !== 'string' || userId === 'undefined' || userId.trim() === '') {
+    if (!userId || typeof userId !== 'string' || !UUID_REGEX.test(userId)) {
       profile.value = null
       return null
     }
@@ -170,7 +172,7 @@ export const useUserProfile = () => {
       userId = authData?.user?.id
     }
 
-    if (userId && typeof userId === 'string' && userId !== 'undefined') {
+    if (userId && typeof userId === 'string' && UUID_REGEX.test(userId)) {
       const { error } = await supabase.rpc('update_user_interests', {
         p_selected_topics: normalized
       })

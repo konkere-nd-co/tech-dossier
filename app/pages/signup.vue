@@ -53,10 +53,12 @@ const handleSignUp = async () => {
 
     // If session was returned immediately (e.g., auto-confirm is enabled in Supabase)
     if (data.session) {
+      const user = useSupabaseUser()
+      user.value = data.session.user
+
       toastSuccess('Clearance Level 1 issued! Initializing terminal...', 'ENLISTMENT COMPLETE')
-      await fetchProfile()
-      await navigateTo('/')
-      return
+      await fetchProfile(data.session.user.id)
+      return navigateTo('/')
     }
 
     // If session was not returned, attempt immediate authentication
@@ -66,10 +68,12 @@ const handleSignUp = async () => {
     })
 
     if (!signInError && signInData?.session) {
+      const user = useSupabaseUser()
+      user.value = signInData.session.user
+
       toastSuccess('Clearance Level 1 issued! Initializing terminal...', 'ENLISTMENT COMPLETE')
-      await fetchProfile()
-      await navigateTo('/')
-      return
+      await fetchProfile(signInData.session.user.id)
+      return navigateTo('/')
     }
 
     // If Supabase has email confirmation strictly enforced

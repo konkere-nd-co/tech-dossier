@@ -35,9 +35,12 @@ const handleLogin = async () => {
     }
 
     if (data.session) {
+      const user = useSupabaseUser()
+      user.value = data.session.user
+
       toastSuccess('Operative credentials verified. Establishing secure connection...', 'ACCESS GRANTED')
-      await fetchProfile()
-      await navigateTo('/')
+      await fetchProfile(data.session.user.id)
+      return navigateTo('/')
     }
   } catch (err: any) {
     const msg = err.message || 'An unexpected authentication fault occurred.'
