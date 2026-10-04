@@ -18,9 +18,7 @@ export default defineNuxtConfig({
   ],
 
   supabase: {
-    redirect: false,
-    url: process.env.SUPABASE_URL || process.env.NUXT_PUBLIC_SUPABASE_URL,
-    key: process.env.SUPABASE_KEY || process.env.NUXT_PUBLIC_SUPABASE_KEY
+    redirect: false
   },
 
   nitro: {
@@ -29,6 +27,10 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
+      supabase: {
+        url: process.env.SUPABASE_URL || process.env.NUXT_PUBLIC_SUPABASE_URL,
+        key: process.env.SUPABASE_KEY || process.env.NUXT_PUBLIC_SUPABASE_KEY
+      },
       supabaseUrl: process.env.SUPABASE_URL || process.env.NUXT_PUBLIC_SUPABASE_URL,
       supabaseKey: process.env.SUPABASE_KEY || process.env.NUXT_PUBLIC_SUPABASE_KEY
     }
