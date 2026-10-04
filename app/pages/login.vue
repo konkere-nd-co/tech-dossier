@@ -37,7 +37,7 @@ const handleLogin = async () => {
     if (data.session) {
       toastSuccess('Operative credentials verified. Establishing secure connection...', 'ACCESS GRANTED')
       await fetchProfile()
-      router.push('/')
+      await navigateTo('/')
     }
   } catch (err: any) {
     const msg = err.message || 'An unexpected authentication fault occurred.'

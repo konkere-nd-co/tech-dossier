@@ -107,7 +107,7 @@ const handleSubmit = async () => {
       p_test_id: testData.value.id,
       p_answer: answerToSubmit
     }
-    if (operativeId) {
+    if (operativeId && typeof operativeId === 'string' && operativeId !== 'undefined' && operativeId.trim() !== '') {
       payload.p_user_id = operativeId
     }
 

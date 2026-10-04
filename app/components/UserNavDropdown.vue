@@ -108,7 +108,7 @@ const userInitial = computed(() => {
             {{ profile?.email || user?.email }}
           </p>
           <p class="text-[11px] text-muted">
-            ID: <span class="font-mono">{{ user?.id?.slice(0, 12) }}...</span>
+            Operative ID: <span class="font-mono font-bold text-foreground">TD-{{ (user?.id || '000000').slice(0, 6).toUpperCase() }}</span>
           </p>
         </div>
 

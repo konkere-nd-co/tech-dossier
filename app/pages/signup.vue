@@ -51,17 +51,32 @@ const handleSignUp = async () => {
       return
     }
 
+    // If session was returned immediately (e.g., auto-confirm is enabled in Supabase)
     if (data.session) {
       toastSuccess('Clearance Level 1 issued! Initializing terminal...', 'ENLISTMENT COMPLETE')
       await fetchProfile()
-      router.push('/')
-    } else if (data.user) {
-      const msg = 'Operative record initialized. Verification signal dispatched. You may now authenticate.'
+      await navigateTo('/')
+      return
+    }
+
+    // If session was not returned, attempt immediate authentication
+    const { data: signInData, error: signInError } = await supabase.auth.signInWithPassword({
+      email: email.value,
+      password: password.value
+    })
+
+    if (!signInError && signInData?.session) {
+      toastSuccess('Clearance Level 1 issued! Initializing terminal...', 'ENLISTMENT COMPLETE')
+      await fetchProfile()
+      await navigateTo('/')
+      return
+    }
+
+    // If Supabase has email confirmation strictly enforced
+    if (data.user) {
+      const msg = 'Operative record created. Email confirmation is enabled in Supabase — please verify your email inbox to activate your terminal session, or disable "Confirm email" in Supabase Auth settings for instant entry.'
       successMessage.value = msg
-      toastSuccess(msg, 'ENLISTMENT DISPATCHED')
-      setTimeout(() => {
-        router.push('/login')
-      }, 2000)
+      toastSuccess(msg, 'VERIFICATION DISPATCHED')
     }
   } catch (err: any) {
     const msg = err.message || 'An unexpected registration fault occurred.'

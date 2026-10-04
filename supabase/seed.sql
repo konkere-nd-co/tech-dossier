@@ -1,17 +1,4 @@
--- 1. Create the dossiers table
-CREATE TABLE IF NOT EXISTS public.dossiers (
-  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  title TEXT NOT NULL,
-  slug TEXT NOT NULL UNIQUE,
-  category TEXT NOT NULL,
-  required_clearance INTEGER NOT NULL DEFAULT 1,
-  is_code_related BOOLEAN NOT NULL DEFAULT false,
-  content_markdown TEXT NOT NULL,
-  briefing_summary TEXT NOT NULL,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT timezone('utc'::text, now()) NOT NULL
-);
-
--- 2. Insert the MVP seed data
+-- Seed data for public.dossiers
 INSERT INTO public.dossiers (title, slug, category, required_clearance, is_code_related, briefing_summary, content_markdown) VALUES
 
 -- LEVEL 1: Civilian Observer (Daily Drivers)

@@ -194,9 +194,9 @@ const getCardGridSpan = (dossier: CatalogDossier) => {
         </NuxtLink>
       </div>
       <div class="hidden md:flex items-center space-x-3 text-[11px] text-muted pl-4">
-        <span>ENCRYPTION: AES-256</span>
+        <span>SYSTEM STATUS: OPERATIONAL</span>
         <span>•</span>
-        <span>TOPIC-BASED CLEARANCE ENGINE ACTIVE</span>
+        <span>INTELLIGENCE DISPATCH LIVE</span>
       </div>
     </aside>
 
@@ -355,7 +355,7 @@ const getCardGridSpan = (dossier: CatalogDossier) => {
 
           <div class="flex items-center space-x-2 text-muted text-[11px]">
             <span class="w-2 h-2 rounded-full bg-success animate-ping" />
-            <span>Security Engine: Topic-Based RLS & PostgreSQL RPC Enforced</span>
+            <span>Central Security Grid: Verified & Encrypted</span>
           </div>
         </div>
 
@@ -435,7 +435,7 @@ const getCardGridSpan = (dossier: CatalogDossier) => {
         </div>
 
         <div v-else-if="catalogError" class="py-16 text-center text-xs text-danger">
-          Error querying dossier database: {{ catalogError.message }}
+          Unable to synchronize mission dossiers. Please refresh your browser or check your connection status.
         </div>
 
         <!-- Empty state if selected focus has no dossiers -->

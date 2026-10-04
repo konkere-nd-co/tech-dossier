@@ -104,7 +104,13 @@ export const useUserProfile = () => {
   }
 
   const fetchProfile = async () => {
-    if (!user.value) {
+    let userId = user.value?.id
+    if (!userId) {
+      const { data: authData } = await supabase.auth.getUser()
+      userId = authData?.user?.id
+    }
+
+    if (!userId || typeof userId !== 'string' || userId === 'undefined' || userId.trim() === '') {
       profile.value = null
       return null
     }
@@ -116,7 +122,7 @@ export const useUserProfile = () => {
       const { data, error } = await supabase
         .from('users')
         .select('*')
-        .eq('id', user.value.id)
+        .eq('id', userId)
         .maybeSingle()
 
       if (error) {
@@ -128,8 +134,8 @@ export const useUserProfile = () => {
         profile.value = data
       } else {
         profile.value = {
-          id: user.value.id,
-          email: user.value.email || '',
+          id: userId,
+          email: user.value?.email || '',
           clearance_level: 1,
           intel_points: 0,
           selected_topics: ['ALL'],
@@ -158,7 +164,13 @@ export const useUserProfile = () => {
       }
     }
 
-    if (user.value) {
+    let userId = user.value?.id
+    if (!userId) {
+      const { data: authData } = await supabase.auth.getUser()
+      userId = authData?.user?.id
+    }
+
+    if (userId && typeof userId === 'string' && userId !== 'undefined') {
       const { error } = await supabase.rpc('update_user_interests', {
         p_selected_topics: normalized
       })
@@ -166,7 +178,7 @@ export const useUserProfile = () => {
         await supabase
           .from('users')
           .update({ selected_topics: normalized })
-          .eq('id', user.value.id)
+          .eq('id', userId)
       }
     }
   }
@@ -196,11 +208,11 @@ export const useUserProfile = () => {
     navigateTo('/login')
   }
 
-  // React to user session changes
+  // React to user session changes safely
   watch(
-    () => user.value,
-    (newUser) => {
-      if (newUser) {
+    () => user.value?.id,
+    (newUserId) => {
+      if (newUserId && typeof newUserId === 'string' && newUserId !== 'undefined') {
         fetchProfile()
       } else {
         profile.value = null
