@@ -1,0 +1,259 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ==========================================================================
+   CLEARANCE THEME ENGINES
+   ========================================================================== */
+
+/* Level 1 (Civilian): Clean, bright, standard web application */
+:root,
+.theme-lvl-1,
+.theme-standard {
+  --color-bg: #f8fafc;
+  --color-card: #ffffff;
+  --color-card-subtle: #f1f5f9;
+  --color-border: #cbd5e1;
+  --color-border-glow: rgba(2, 132, 199, 0.4);
+  --color-text: #0f172a;
+  --color-muted: #475569;
+  --color-accent: #0284c7;
+  --color-accent-hover: #0369a1;
+  --color-accent-contrast: #ffffff;
+  --color-badge-bg: #e0f2fe;
+  --color-badge-text: #0369a1;
+  --color-danger: #ef4444;
+  --color-warning: #f59e0b;
+  --color-success: #10b981;
+}
+
+/* Level 2 (Operative): Dark mode, reminiscent of a developer console (grays and subtle blues) */
+.theme-lvl-2,
+.theme-dev-console {
+  --color-bg: #0b1120;
+  --color-card: #0f172a;
+  --color-card-subtle: #1e293b;
+  --color-border: #1e293b;
+  --color-border-glow: rgba(56, 189, 248, 0.4);
+  --color-text: #f1f5f9;
+  --color-muted: #94a3b8;
+  --color-accent: #38bdf8;
+  --color-accent-hover: #0ea5e9;
+  --color-accent-contrast: #0b1120;
+  --color-badge-bg: #0c4a6e;
+  --color-badge-text: #7dd3fc;
+  --color-danger: #f43f5e;
+  --color-warning: #fbbf24;
+  --color-success: #10b981;
+}
+
+/* Level 3 (Specialist): Cyber-tactical dark mode (deep blacks, high-contrast neon amber accents) */
+.theme-lvl-3,
+.theme-tactical-dark {
+  --color-bg: #09090b;
+  --color-card: #121216;
+  --color-card-subtle: #1c1c22;
+  --color-border: #27272a;
+  --color-border-glow: rgba(245, 158, 11, 0.45);
+  --color-text: #fafafa;
+  --color-muted: #a1a1aa;
+  --color-accent: #f59e0b;
+  --color-accent-hover: #d97706;
+  --color-accent-contrast: #09090b;
+  --color-badge-bg: #451a03;
+  --color-badge-text: #fcd34d;
+  --color-danger: #ef4444;
+  --color-warning: #eab308;
+  --color-success: #22c55e;
+}
+
+/* Level 4 (Architect): Full terminal aesthetic (pure black background, phosphor green text) */
+.theme-lvl-4,
+.theme-terminal {
+  --color-bg: #000000;
+  --color-card: #040a04;
+  --color-card-subtle: #091609;
+  --color-border: #15803d;
+  --color-border-glow: rgba(34, 197, 94, 0.6);
+  --color-text: #4ade80;
+  --color-muted: #16a34a;
+  --color-accent: #22c55e;
+  --color-accent-hover: #16a34a;
+  --color-accent-contrast: #000000;
+  --color-badge-bg: #052e16;
+  --color-badge-text: #86efac;
+  --color-danger: #f87171;
+  --color-warning: #facc15;
+  --color-success: #4ade80;
+}
+
+/* Smooth theme transitions */
+body {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Contrast & Theme Utilities for buttons and active tabs */
+.bg-accent {
+  background-color: var(--color-accent) !important;
+}
+
+.hover\:bg-accent-hover:hover {
+  background-color: var(--color-accent-hover) !important;
+}
+
+.text-accent {
+  color: var(--color-accent) !important;
+}
+
+.border-accent {
+  border-color: var(--color-accent) !important;
+}
+
+.text-accent-contrast {
+  color: var(--color-accent-contrast) !important;
+}
+
+.bg-accent-contrast {
+  background-color: var(--color-accent-contrast) !important;
+}
+
+/* Surface styles for Modals, Popovers, and Dropdowns to guarantee 100% opacity */
+.modal-surface,
+.popover-surface {
+  background-color: var(--color-card) !important;
+  opacity: 1 !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+:root .modal-surface,
+:root .popover-surface,
+.theme-lvl-1 .modal-surface,
+.theme-lvl-1 .popover-surface {
+  background-color: #ffffff !important;
+  box-shadow: 0 25px 50px -12px rgba(15, 23, 42, 0.25), 0 0 0 1px rgba(226, 232, 240, 1) !important;
+}
+
+.theme-lvl-2 .modal-surface,
+.theme-lvl-2 .popover-surface {
+  background-color: #0f172a !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(30, 41, 59, 1) !important;
+}
+
+.theme-lvl-3 .modal-surface,
+.theme-lvl-3 .popover-surface {
+  background-color: #121216 !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.95), 0 0 0 1px rgba(39, 39, 42, 1) !important;
+}
+
+.theme-lvl-4 .modal-surface,
+.theme-lvl-4 .popover-surface {
+  background-color: #050d06 !important;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.98), 0 0 0 1px rgba(22, 101, 52, 1) !important;
+}
+
+/* CRT Scanline effect overlay for Level 4 Architect */
+.theme-lvl-4::before,
+.theme-terminal::before {
+  content: " ";
+  display: block;
+  position: fixed;
+  top: 0; left: 0; bottom: 0; right: 0;
+  background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+  z-index: 999;
+  background-size: 100% 3px, 6px 100%;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+/* Markdown typography */
+.markdown-body h1 {
+  font-size: 1.65rem;
+  font-weight: 800;
+  margin-bottom: 1rem;
+  color: var(--color-text);
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: 0.5rem;
+}
+
+.markdown-body h2 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+  color: var(--color-text);
+}
+
+.markdown-body h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+  color: var(--color-text);
+}
+
+.markdown-body p {
+  margin-bottom: 1rem;
+  line-height: 1.75;
+  color: var(--color-text);
+}
+
+.markdown-body strong {
+  color: var(--color-accent);
+  font-weight: 700;
+}
+
+.markdown-body pre {
+  background-color: var(--color-card-subtle);
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  padding: 1rem;
+  overflow-x: auto;
+  margin-bottom: 1.25rem;
+}
+
+.markdown-body code {
+  background-color: var(--color-card-subtle);
+  border: 1px solid var(--color-border);
+  padding: 0.15rem 0.35rem;
+  border-radius: 0.25rem;
+  font-size: 0.85em;
+  color: var(--color-accent);
+}
+
+.markdown-body pre code {
+  background-color: transparent;
+  border: none;
+  padding: 0;
+  color: inherit;
+}
+
+.markdown-body ul,
+.markdown-body ol {
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+.markdown-body ul {
+  list-style-type: disc;
+}
+
+.markdown-body ol {
+  list-style-type: decimal;
+}
+
+.markdown-body li {
+  margin-bottom: 0.35rem;
+  line-height: 1.6;
+}
+
+.markdown-body blockquote {
+  border-left: 3px solid var(--color-accent);
+  padding-left: 1rem;
+  font-style: italic;
+  color: var(--color-muted);
+  margin-bottom: 1rem;
+}
