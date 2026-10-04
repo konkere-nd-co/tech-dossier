@@ -107,6 +107,7 @@ SECURITY DEFINER
 AS $$
 DECLARE
   v_user_id UUID;
+  v_user_email TEXT;
   v_updated_user public.users%ROWTYPE;
 BEGIN
   v_user_id := auth.uid();
@@ -114,9 +115,37 @@ BEGIN
     RETURN jsonb_build_object('success', false, 'message', 'Unauthorized: User session required.');
   END IF;
 
-  UPDATE public.users
-  SET selected_topics = p_selected_topics
-  WHERE id = v_user_id
+  -- Ensure user profile exists (upsert)
+  SELECT email INTO v_user_email FROM auth.users WHERE id = v_user_id;
+
+  INSERT INTO public.users (
+    id,
+    email,
+    clearance_level,
+    intel_points,
+    selected_topics,
+    topic_clearances
+  )
+  VALUES (
+    v_user_id,
+    COALESCE(v_user_email, ''),
+    1,
+    0,
+    p_selected_topics,
+    jsonb_build_object(
+      'Internet Basics', jsonb_build_object('level', 1, 'points', 0),
+      'Security', jsonb_build_object('level', 1, 'points', 0),
+      'Workspace Ops', jsonb_build_object('level', 1, 'points', 0),
+      'Web Architecture', jsonb_build_object('level', 1, 'points', 0),
+      'System Architecture', jsonb_build_object('level', 1, 'points', 0),
+      'Design', jsonb_build_object('level', 1, 'points', 0),
+      'Artificial Intelligence', jsonb_build_object('level', 1, 'points', 0),
+      'Hardware & IoT', jsonb_build_object('level', 1, 'points', 0),
+      'Tech History', jsonb_build_object('level', 1, 'points', 0)
+    )
+  )
+  ON CONFLICT (id) DO UPDATE
+  SET selected_topics = EXCLUDED.selected_topics
   RETURNING * INTO v_updated_user;
 
   RETURN jsonb_build_object(

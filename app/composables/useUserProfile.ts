@@ -135,7 +135,7 @@ export const useUserProfile = () => {
       if (data) {
         profile.value = data
       } else {
-        profile.value = {
+        const defaultProfile: UserProfile = {
           id: userId,
           email: user.value?.email || '',
           clearance_level: 1,
@@ -144,6 +144,12 @@ export const useUserProfile = () => {
           topic_clearances: {},
           created_at: new Date().toISOString()
         }
+        profile.value = defaultProfile
+
+        // Auto-heal: ensure user record exists in public.users
+        await supabase
+          .from('users')
+          .upsert(defaultProfile, { onConflict: 'id' })
       }
 
       return profile.value
@@ -173,14 +179,21 @@ export const useUserProfile = () => {
     }
 
     if (userId && typeof userId === 'string' && UUID_REGEX.test(userId)) {
-      const { error } = await supabase.rpc('update_user_interests', {
+      const { data: rpcData, error } = await supabase.rpc('update_user_interests', {
         p_selected_topics: normalized
       })
-      if (error) {
+
+      // If RPC fails or returns null selected_topics (meaning the row in public.users was missing):
+      if (error || !rpcData || (rpcData as any).selected_topics === null) {
         await supabase
           .from('users')
-          .update({ selected_topics: normalized })
-          .eq('id', userId)
+          .upsert({
+            id: userId,
+            email: user.value?.email || '',
+            selected_topics: normalized,
+            clearance_level: profile.value?.clearance_level || 1,
+            intel_points: profile.value?.intel_points || 0
+          }, { onConflict: 'id' })
       }
     }
   }
